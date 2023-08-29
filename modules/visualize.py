@@ -1,45 +1,45 @@
-# command.py
-# terminal controll
-# created by Jonathan M. Will @ 12.08.2023
+
+
 
 # ##################################################################################################################################
 # ##################################################################################################################################
 # IMPORT:
 
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw
+
+plt.ion()
 
 # ##################################################################################################################################
 # ##################################################################################################################################
-# VARIABLES:
+# VARIABLKES:
 
 
 # ##################################################################################################################################
 # ##################################################################################################################################
 # METHODS:
 
-def preprocess_command_line(line):
-    return line.split(' ')
+
+def creat_figure(title:str='', suptitle:str=''):
+    fig, axes = plt.subplots(1,1, figsize=(8,8))
+    fig.suptitle(title)
+    fig.canvas.draw()
+    return fig, axes
 
 
-
-def command_loop():
-    
-    inp:str = input('<')
-    cmd:list = preprocess_command_line(inp)
-    
-    print(cmd)
-
-    if len(cmd) >= 1 and cmd[0] in COMMANDS:
-        COMMANDS[cmd[0]](cmd[1:])
-
-
-
-def command_help(args):
-    print(f'help: {args}')
-    for cmd in COMMANDS:
-        print(f' - {cmd}')
+def load_image(filepath:str, fig, axe):
+    image = Image.open(filepath)
+    image = image.convert('RGBA')
+    imshow = axe.imshow(image)
+    draw = ImageDraw.Draw(image)
+    fig.canvas.draw()
+    return image, imshow, draw
 
 # ##################################################################################################################################
 # ##################################################################################################################################
 
-COMMANDS = {'help':command_help}
-
+if __name__ == '__main__':
+    fig, axes = creat_figure()
+    load_image("img/testimage.png", fig, axes)
+    input("exit ?")
